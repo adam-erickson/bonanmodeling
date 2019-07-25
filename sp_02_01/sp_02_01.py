@@ -74,6 +74,7 @@ ax.plot(y1, z_rel, 'b-', label="p,q = 2.5,2.5")
 ax.plot(y2, z_rel, 'r-', label="p,q = 3.5,2.0")
 ax.plot(y3, z_rel, 'g-', label="p,q = 11.5,3.5")
 
+# Replicate MATLAB style
 ax.tick_params(axis='both', direction='in', top=True, right=True)
 ax.legend(loc='lower right', fontsize='small', framealpha=1, borderaxespad=1)
 
