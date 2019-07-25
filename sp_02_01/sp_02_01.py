@@ -75,7 +75,7 @@ ax.plot(y2, z_rel, 'r-', label="p,q = 3.5,2.0")
 ax.plot(y3, z_rel, 'g-', label="p,q = 11.5,3.5")
 
 ax.tick_params(axis='both', direction='in', top=True, right=True)
-ax.legend(loc='lower right', fontsize='small', framealpha=1)
+ax.legend(loc='lower right', fontsize='small', framealpha=1, borderaxespad=1)
 
 plt.title("Profiles", fontweight='bold')
 plt.xlabel(r"Leaf area density ($\mathdefault{m^2 m^{-3}}$)")
