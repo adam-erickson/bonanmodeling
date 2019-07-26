@@ -181,8 +181,22 @@ plt.show()
 # column 5 = thermal conductivity for soil 4 (W/m/K)
 # column 6 = thermal conductivity for soil 5 (W/m/K)
 
-np.savetxt("tk_python.txt", (s, tk1, tk2, tk3, tk4, tk5),
-           delimiter=' ', fmt='%12.4f', header="s tex1 tex2 tex3 tex4 tex5")
+# First, create a header string with proper spacing
+a = np.array(["s", "tex1", "tex2", "tex3", "tex4", "tex5"])
+header = "{:>12s} {:>12s} {:>12s} {:>12s} {:>12s} {:>12s}".format(*a)
+
+np.savetxt("tk_python.txt", np.transpose([s, tk1, tk2, tk3, tk4, tk5]), comments="",
+           delimiter=" ", fmt='%12.4f', header=header)
+
+# Or, you can write to the file manually
+# with open("tk_python.txt", 'w') as f:
+#    for i in ["s", "tex1", "tex2", "tex3", "tex4", "tex5"]:
+#        f.write("{:>12s}".format(i))
+#    f.write("\n")
+#    for j in np.transpose([s, tk1, tk2, tk3, tk4, tk5]):
+#        for k in j:
+#            f.write("{:>12.4f}".format(k))
+#        f.write("\n")
 
 # Write formated output to text file: n rows x 6 columns
 # column 1 = relative soil water (s)
@@ -192,5 +206,5 @@ np.savetxt("tk_python.txt", (s, tk1, tk2, tk3, tk4, tk5),
 # column 5 = heat capacity for soil 4 (MJ/m3/K)
 # column 6 = heat capacity for soil 5 (MJ/m3/K)
 
-np.savetxt("cv_python.txt", (s, cv1, cv2, cv3, cv4, cv5),
-           delimiter=' ', fmt='%12.4f', header="s tex1 tex2 tex3 tex4 tex5")
+np.savetxt("cv_python.txt", np.transpose([s, cv1, cv2, cv3, cv4, cv5]), comments="",
+           delimiter=" ", fmt='%12.4f', header=header)
