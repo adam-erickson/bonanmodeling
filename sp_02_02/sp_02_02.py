@@ -113,10 +113,11 @@ for i in range(len(angle)):
     print("{:10.2f} {:15.4f} {:15.4f}".format(angle[
         i]*180/np.pi, beta_lad[i], exact_lad[i]))
 
-print("beta distribution")
+print("\nbeta distribution")
 print("Sum of leaf angle distribution = {:15.4f}".format(beta_sum))
 print("Mean leaf angle = {:15.4f}".format(beta_ave*180/np.pi))
-print("Exact solution")
+
+print("\nExact solution")
 print("Sum of leaf angle distribution = {:15.4f}".format(exact_sum))
 print("Mean leaf angle = {:15.4f}".format(exact_ave*180/np.pi))
 
@@ -137,7 +138,7 @@ else:
 
 analytical_ave, err = integrate.quad(fx, 0, np.pi/2)
 
-print("Analytical solution")
+print("\nAnalytical solution")
 print("Mean leaf angle = {:15.4f}".format(analytical_ave*180/np.pi))
 
 # --- Calculate Ross index
@@ -156,7 +157,7 @@ exact_xl = 0.5 * (np.abs(0.134-F1) + np.abs(0.366-F2) + np.abs(0.5-F3))
 if (0.5-F3) < 0:
     exact_xl = -exact_xl
 
-print("Ross index")
+print("\nRoss index")
 print("beta distribution = {:15.4f}".format(beta_xl))
 print("   Exact solution = {:15.4f}".format(exact_xl))
 
@@ -183,7 +184,8 @@ x = np.multiply(x, (180/np.pi))           # radians -> degrees
 angle = np.multiply(angle, (180/np.pi))   # radians -> degrees
 
 fig, ax = plt.subplots(figsize=(8, 6))
-ax.plot(angle, beta_pdf, 'b--o', linewidth=1, label="beta")
+ax.plot(angle, beta_pdf, 'b--o', markerfacecolor='none',
+        linewidth=1, label="beta")
 ax.plot(angle, exact_pdf, 'r--*', linewidth=1, label="exact")
 ax.plot(x, y, 'g', linewidth=1, label="analytical")
 
