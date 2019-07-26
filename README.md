@@ -1,6 +1,6 @@
 # bonanmodeling
 
-Matlab and Python code for the textbook [*Climate Change and Terrestrial Ecosystem Modeling*](http://www.cgd.ucar.edu/staff/bonan/ecomod/index.html), or CCaTEM, by [Dr. Gordon Bonan](http://www.cgd.ucar.edu/staff/bonan/) of the US National Center for Atmospheric Research.
+Matlab and Python code for the textbook [*Climate Change and Terrestrial Ecosystem Modeling*](http://www.cgd.ucar.edu/staff/bonan/ecomod/index.html), or CCaTEM, by [Dr. Gordon Bonan](http://www.cgd.ucar.edu/staff/bonan/) of the US National Center for Atmospheric Research (NCAR).
 
 <p align="center">
   <a href="http://www.cgd.ucar.edu/staff/bonan/ecomod/index.html">
