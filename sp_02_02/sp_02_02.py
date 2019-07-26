@@ -1,5 +1,7 @@
 # Supplemental program 2.2
 
+# Author: Adam Erickson, PhD, Washington State University
+
 # ------------------------------------------------------------------------------
 # Evaluate the leaf angle probability density function (PDF) from the beta
 # distribution using the mean and standard deviation of the leaf inclination
