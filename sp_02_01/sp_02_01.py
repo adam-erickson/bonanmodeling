@@ -8,6 +8,7 @@
 
 import numpy as np
 from scipy.special import beta
+from matplotlib import ticker
 from matplotlib import pyplot as plt
 
 # --- Parameters for beta distribution
@@ -69,16 +70,24 @@ for i in range(3):
 
 z_rel = z / hc
 
-fig, ax = plt.subplots()
-ax.plot(y1, z_rel, 'b-', label="p,q = 2.5,2.5")
-ax.plot(y2, z_rel, 'r-', label="p,q = 3.5,2.0")
-ax.plot(y3, z_rel, 'g-', label="p,q = 11.5,3.5")
+fig, ax = plt.subplots(figsize=(8, 6))
+ax.plot(y1, z_rel, 'b-', linewidth=1, label="p,q = 2.5,2.5")
+ax.plot(y2, z_rel, 'r-', linewidth=1, label="p,q = 3.5,2.0")
+ax.plot(y3, z_rel, linestyle='-', color='lightgreen',
+        linewidth=1, label="p,q = 11.5,3.5")
 
 # Replicate Matlab style
+ax.xaxis.set_major_locator(ticker.MultipleLocator(0.2))
+ax.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
+ax.set_xlim(0, 2)
+ax.set_ylim(0, 1)
 ax.tick_params(axis='both', direction='in', top=True, right=True)
-ax.legend(loc='lower right', fontsize='small', framealpha=1, borderaxespad=1)
+ax.legend(loc='lower right', fontsize='small', edgecolor='k',
+          fancybox=False, framealpha=1, borderaxespad=1)
 
-plt.title("Profiles", fontweight='bold')
+plt.title("Profiles", fontweight='bold', fontdict={'fontsize': 10})
 plt.xlabel(r"Leaf area density ($\mathdefault{m^2 m^{-3}}$)")
 plt.ylabel(r"Height ($\mathdefault{z/h_c}$)")
+
+plt.subplots_adjust(left=0.125, right=0.9, bottom=0.1, top=0.93)
 plt.show()
