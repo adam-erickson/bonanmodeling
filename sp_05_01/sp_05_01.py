@@ -57,7 +57,7 @@ soiltyp = np.array([1, 3, 5, 8, 11])
 # Set relative soil water content (s) from 0 to 1
 
 inc = 0.05                             # increment
-n = (1 - 0) / inc + 1                  # number of values
+n = np.int((1 - 0) / inc + 1)          # number of values
 # n evenly spaced values between 0 and 1 (inclusive)
 s = np.linspace(0, 1, n)
 
@@ -104,7 +104,7 @@ for i in range(len(soiltyp)):
         else:
             tko = 3.0
 
-        tksol = (tk_quartz ^ quartz) * (tko ^ (1-quartz))
+        tksol = (tk_quartz ** quartz) * (tko ** (1-quartz))
 
         # Unfrozen and frozen saturated thermal conductivity (W/m/K)
 
