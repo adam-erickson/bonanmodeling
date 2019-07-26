@@ -52,16 +52,15 @@ watsat = np.array([0.395, 0.410, 0.435, 0.485, 0.451,
 
 # Define 5 soil types to process
 
-soiltyp = np.array([1, 3, 5, 8, 11])
+soiltyp = np.array([0, 2, 4, 7, 10])
 
 # Set relative soil water content (s) from 0 to 1
 
-inc = 0.05                             # increment
-n = np.int((1 - 0) / inc + 1)          # number of values
-# n evenly spaced values between 0 and 1 (inclusive)
-s = np.linspace(0, 1, n)
+inc = 0.05                       # increment
+n = np.int((1 - 0) / inc + 1)    # number of values
+s = np.linspace(0, 1, n)         # n evenly spaced values between 0 and 1
 
-# Placeholders
+# Placeholder arrays for results
 
 tk1 = np.zeros(len(s))
 cv1 = np.zeros(len(s))
@@ -114,9 +113,9 @@ for i in range(len(soiltyp)):
         # Unfrozen and frozen Kersten number
 
         if sand[k] < 50:
-            ke_u = np.log10(np.max(s[j], 0.1)) + 1
+            ke_u = np.log10(np.max([s[j], 0.1])) + 1
         else:
-            ke_u = 0.7 * np.log10(np.max(s[j], 0.05)) + 1
+            ke_u = 0.7 * np.log10(np.max([s[j], 0.05])) + 1
 
         ke_f = s[j]
 
@@ -132,26 +131,23 @@ for i in range(len(soiltyp)):
 
         # Save values for each texture type
 
-        if i == 1:
+        if i == 0:
             tk1[j] = tku
             cv1[j] = cvu * 1e-06
-        elif i == 2:
+        elif i == 1:
             tk2[j] = tku
             cv2[j] = cvu * 1e-06
-        elif i == 3:
+        elif i == 2:
             tk3[j] = tku
             cv3[j] = cvu * 1e-06
-        elif i == 4:
+        elif i == 3:
             tk4[j] = tku
             cv4[j] = cvu * 1e-06
-        elif i == 5:
+        elif i == 4:
             tk5[j] = tku
             cv5[j] = cvu * 1e-06
         else:
             print("Error: value i out of range")
-
-        # end soil water loop j
-    # end soil type loop i
 
 # Make graph
 
@@ -163,10 +159,10 @@ ax.plot(s, tk4, 'm-', linewidth=1, label="clay loam")
 ax.plot(s, tk5, 'c-', linewidth=1, label="clay")
 
 # Replicate Matlab style
-# ax.xaxis.set_major_locator(ticker.MultipleLocator(10))
-# ax.yaxis.set_major_locator(ticker.MultipleLocator(0.2))
-#ax.set_xlim(0, 90)
-#ax.set_ylim(0, 1.4)
+ax.xaxis.set_major_locator(ticker.MultipleLocator(0.1))
+ax.yaxis.set_major_locator(ticker.MultipleLocator(0.5))
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 3)
 ax.tick_params(axis='both', direction='in', top=True, right=True)
 ax.legend(loc='best', fontsize='small', edgecolor='k',
           fancybox=False, framealpha=1, borderaxespad=1)
@@ -175,6 +171,7 @@ plt.subplots_adjust(left=0.125, right=0.9, bottom=0.1, top=0.93)
 plt.title("Thermal conductivity", fontweight='bold', fontdict={'fontsize': 10})
 plt.xlabel("Relative soil moisture")
 plt.ylabel(r"Thermal conductivity ($\mathdefault{W m^{-1} K^{-1}}$)")
+plt.show()
 
 # Write formated output to text file: n rows x 6 columns
 # column 1 = relative soil water (s)
