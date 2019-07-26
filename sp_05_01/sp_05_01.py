@@ -41,7 +41,7 @@ tk_quartz = 7.7           # Thermal conductivity of quartz (W/m/K)
 # 11: clay
 
 silt = np.array([5, 12, 32, 70, 39, 15, 56, 34,  6, 47, 20])    # Percent silt
-sand = np.array([92, 82, 58, 17, 43, 58, 10, 32, 52,  6, 22])    # Percent sand
+sand = np.array([92, 82, 58, 17, 43, 58, 10, 32, 52,  6, 22])   # Percent sand
 clay = np.array([3,  6, 10, 13, 18, 27, 34, 34, 42, 47, 58])    # Percent clay
 
 # Volumetric soil water content at saturation (porosity)
