@@ -185,8 +185,8 @@ angle = np.multiply(angle, (180/np.pi))   # radians -> degrees
 
 fig, ax = plt.subplots(figsize=(8, 6))
 ax.plot(angle, beta_pdf, 'b--o', markerfacecolor='none',
-        linewidth=1, label="beta")
-ax.plot(angle, exact_pdf, 'r--*', linewidth=1, label="exact")
+        linewidth=1, dashes=[12, 6], label="beta")
+ax.plot(angle, exact_pdf, 'r--*', linewidth=1, dashes=[12, 6], label="exact")
 ax.plot(x, y, 'g', linewidth=1, label="analytical")
 
 # Replicate Matlab style
