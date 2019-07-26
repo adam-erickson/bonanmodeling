@@ -184,7 +184,7 @@ plt.ylabel(r"Thermal conductivity ($\mathdefault{W m^{-1} K^{-1}}$)")
 # column 5 = thermal conductivity for soil 4 (W/m/K)
 # column 6 = thermal conductivity for soil 5 (W/m/K)
 
-np.savetxt("tk.txt", (s, tk1, tk2, tk3, tk4, tk5),
+np.savetxt("tk_python.txt", (s, tk1, tk2, tk3, tk4, tk5),
            delimiter=' ', fmt='%12.4f', header="s tex1 tex2 tex3 tex4 tex5")
 
 # Write formated output to text file: n rows x 6 columns
@@ -195,5 +195,5 @@ np.savetxt("tk.txt", (s, tk1, tk2, tk3, tk4, tk5),
 # column 5 = heat capacity for soil 4 (MJ/m3/K)
 # column 6 = heat capacity for soil 5 (MJ/m3/K)
 
-np.savetxt("cv.txt", (s, cv1, cv2, cv3, cv4, cv5),
+np.savetxt("cv_python.txt", (s, cv1, cv2, cv3, cv4, cv5),
            delimiter=' ', fmt='%12.4f', header="s tex1 tex2 tex3 tex4 tex5")
