@@ -84,10 +84,9 @@ ax.set_ylim(0, 1)
 ax.tick_params(axis='both', direction='in', top=True, right=True)
 ax.legend(loc='lower right', fontsize='small', edgecolor='k',
           fancybox=False, framealpha=1, borderaxespad=1)
+plt.subplots_adjust(left=0.125, right=0.9, bottom=0.1, top=0.93)
 
 plt.title("Profiles", fontweight='bold', fontdict={'fontsize': 10})
 plt.xlabel(r"Leaf area density ($\mathdefault{m^2 m^{-3}}$)")
 plt.ylabel(r"Height ($\mathdefault{z/h_c}$)")
-
-plt.subplots_adjust(left=0.125, right=0.9, bottom=0.1, top=0.93)
 plt.show()
