@@ -66,10 +66,10 @@ class SoilVar:
     z
     # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
     z_plus_onehalf
-    dz_plus_onehalf  # Thickness between between z(i) and z(i+1)
-    tsoi  # Soil temperature (K)
-    h2osoi_ice  # Fraction of soil water at saturation (kg H2O/m2)
-    h2osoi_liq  # Fraction of soil water at saturation (kg H2O/m2)
+    dz_plus_onehalf      # Thickness between between z(i) and z(i+1)
+    tsoi                 # Soil temperature (K)
+    h2osoi_ice           # Fraction of soil water at saturation (kg H2O/m2)
+    h2osoi_liq           # Fraction of soil water at saturation (kg H2O/m2)
 
 
 # Initialize objects
