@@ -62,7 +62,8 @@ class SoilVar:
     method = None        # Use excess heat for phase change
     nsoi = None          # Number of layers in soil profile
     dz = None            # Soil layer thickness (m)
-    z  # Soil depth (m) at center of layer i (negative distance from surface)
+    # Soil depth (m) at center of layer i (negative distance from surface)
+    z
     # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
     z_plus_onehalf
     dz_plus_onehalf  # Thickness between between z(i) and z(i+1)
