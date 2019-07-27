@@ -78,13 +78,14 @@ soilvar = SoilVar()
 
 # --- Model run control parameters
 
+
 # Mean daily air temperature for diurnal cycle (K)
 tmean = physcon.tfrz + 15.0
-trange = 10.0                     # Temperature range for diurnal cycle (K)
-dt = 1800                         # Time step (seconds)
-nday = 200                        # Number of days
-soilvar.soil_texture = 1          # Soil texture class: sand
-soilvar.method = "excess-heat"    # Use excess heat for phase change
+trange = 10.0                   # Temperature range for diurnal cycle (K)
+dt = 1800                       # Time step (seconds)
+nday = 200                      # Number of days
+soilvar.soil_texture = 1        # Soil texture class: sand
+soilvar.method = "excess-heat"  # Use excess heat for phase change
 # soilvar.soil_texture = 11         # Soil texture class: clay
 # soilvar.method = "apparent-heat-capacity" # Use apparent heat capacity for phase change
 
