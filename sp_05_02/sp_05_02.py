@@ -65,13 +65,16 @@ class SoilVar:
     nsoi = None              # Number of layers in soil profile
     dz = None                # Soil layer thickness (m)
     # Soil depth (m) at center of layer i (negative distance from surface)
-    z = None
+    z = np.zeros(nsoi)
     # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
-    z_plus_onehalf = np.zeros(self.nsoi)
-    dz_plus_onehalf = None   # Thickness between between z(i) and z(i+1)
-    tsoi = None              # Soil temperature (K)
-    h2osoi_ice = None        # Fraction of soil water at saturation (kg H2O/m2)
-    h2osoi_liq = None        # Fraction of soil water at saturation (kg H2O/m2)
+    z_plus_onehalf = np.zeros(nsoi)
+    # Thickness between between z(i) and z(i+1)
+    dz_plus_onehalf = np.zeros(nsoi)
+    tsoi = np.zeros(nsoi)  # Soil temperature (K)
+    # Fraction of soil water at saturation (kg H2O/m2)
+    h2osoi_ice = np.zeros(nsoi)
+    # Fraction of soil water at saturation (kg H2O/m2)
+    h2osoi_liq = np.zeros(nsoi)
 
 
 soilvar = SoilVar()
