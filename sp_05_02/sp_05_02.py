@@ -149,6 +149,14 @@ for i in range(soilvar.nsoi):
 
 m = 0
 
+# Placeholders
+
+hour_vec = np.zeros()
+z_vec = np.zeros()
+tsoi_vec = np.zeros()
+z_out = np.zeros()
+tsoi_out = np.zeros()
+
 # Main loop is NTIM iterations per day with a time step of DT seconds.
 # This is repeated NDAY times.
 
