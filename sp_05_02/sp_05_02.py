@@ -18,16 +18,16 @@ import soil_temperature
 
 
 class PhysCon:
-    tfrz = 273.15                    # Freezing point of water (K)
-    cwat = 4188.0                    # Specific heat of water (J/kg/K)
-    cice = 2117.27                   # Specific heat of ice (J/kg/K)
-    rhowat = 1000.0                  # Density of water (kg/m3)
-    rhoice = 917.0                   # Density of ice (kg/m3)
-    cvwat = self.cwat * self.rhowat  # Heat capacity of water (J/m3/K)
-    cvice = self.cice * self.rhoice  # Heat capacity of ice (J/m3/K)
-    tkwat = 0.57                     # Thermal conductivity of water (W/m/K)
-    tkice = 2.29                     # Thermal conductivity of ice (W/m/K)
-    hfus = 0.3337e6                  # Heat of fusion for water at 0 C (J/kg)
+    tfrz = 273.15          # Freezing point of water (K)
+    cwat = 4188.0          # Specific heat of water (J/kg/K)
+    cice = 2117.27         # Specific heat of ice (J/kg/K)
+    rhowat = 1000.0        # Density of water (kg/m3)
+    rhoice = 917.0         # Density of ice (kg/m3)
+    cvwat = cwat * rhowat  # Heat capacity of water (J/m3/K)
+    cvice = cice * rhoice  # Heat capacity of ice (J/m3/K)
+    tkwat = 0.57           # Thermal conductivity of water (W/m/K)
+    tkice = 2.29           # Thermal conductivity of ice (W/m/K)
+    hfus = 0.3337e6        # Heat of fusion for water at 0 C (J/kg)
 
 
 physcon = PhysCon()
