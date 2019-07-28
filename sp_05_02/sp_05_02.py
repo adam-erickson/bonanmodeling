@@ -196,8 +196,7 @@ for iday in range(nday):
 
             # Soil layers for top 100 cm
 
-            for i = 1:
-                soilvar.nsoi
+            for i in range(soilvar.nsoi):
                 if soilvar.z[i] > -1.0:
                     m = m + 1
                     hour_vec[m] = hour
@@ -209,16 +208,30 @@ for iday in range(nday):
 
 # --- Write output file
 
-A = np.array([hour_vec, z_vec, tsoi_vec])
-fileID = fopen("data.txt", 'w')
-print(fileID, "{:12s} {:12s} {:12s}".format("hour", "z", "tsoi"))
-print(fileID, "{:12.3f} {:12.3f} {:12.3f}".format(A))
-fclose(fileID)
+a = np.array(["hour", "z", "tsoi"])
+header = "{:12s} {:12s} {:12s}".format(*a)
+
+np.savetxt("data.txt", np.transpose([hour_vec, z_vec, tsoi_vec]), comments="",
+           delimiter=" ", fmt='%12.3f', header=header)
 
 # --- Make contour plot
 
-plt.contour(x=hour_out, y=z_out, z=tsoi_out, 'ShowText', 'on')
-plt.title(r"Soil Temperature ($\mathdefault{^oC}$)")
-plt.xlabel("Time of day (hours)")
-plt.ylabel("Soil depth (cm)")
-plt.show()
+fig, ax = plt.subplots()
+CS = ax.contour(x=hour_out, y=z_out, z=tsoi_out)
+ax.clabel(CS, inline=1, fontsize=10)
+ax.set_title("Simplest default with labels")
+
+# Replicate Matlab style
+# ax.xaxis.set_major_locator(ticker.MultipleLocator(0.1))
+# ax.yaxis.set_major_locator(ticker.MultipleLocator(0.5))
+#ax.set_xlim(0, 1)
+#ax.set_ylim(0, 3)
+#ax.tick_params(axis='both', direction='in', top=True, right=True)
+# ax.legend(loc='best', fontsize='small', edgecolor='k',
+#          fancybox=False, framealpha=1, borderaxespad=1)
+#plt.subplots_adjust(left=0.125, right=0.9, bottom=0.1, top=0.93)
+
+#plt.title(r"Soil Temperature ($\mathdefault{^oC}$)")
+#plt.xlabel("Time of day (hours)")
+#plt.ylabel("Soil depth (cm)")
+# plt.show()
