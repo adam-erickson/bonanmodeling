@@ -181,9 +181,9 @@ for iday in range(nday):
 
         if iday == nday:
 
-                # Surface output
+            # Surface output
 
-                # Vector format - to write to data file
+            # Vector format - to write to data file
             m += 1
             hour_vec[m] = hour
             z_vec[m] = 0
