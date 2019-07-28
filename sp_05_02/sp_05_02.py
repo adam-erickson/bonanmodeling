@@ -101,44 +101,47 @@ soilvar.dz = np.full(shape=(soilvar.nsoi,), fill_value=0.025)
 
 # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
 
-soilvar.z_plus_onehalf(1) = -soilvar.dz(1)
-for i = 2: soilvar.nsoi
-    soilvar.z_plus_onehalf(i) = soilvar.z_plus_onehalf(i-1) - soilvar.dz(i)
+soilvar.z_plus_onehalf[1] = -soilvar.dz[1]
+
+for i in range(1, soilvar.nsoi):
+    soilvar.z_plus_onehalf[i] = soilvar.z_plus_onehalf[i-1] - soilvar.dz[i]
 
 # Soil depth (m) at center of layer i (negative distance from surface)
 
-soilvar.z(1) = 0.5 * soilvar.z_plus_onehalf(1)
-for i = 2: soilvar.nsoi
-    soilvar.z(i) = 0.5 * (soilvar.z_plus_onehalf(i-1) + soilvar.z_plus_onehalf(i))
+soilvar.z[1] = 0.5 * soilvar.z_plus_onehalf[1]
+
+for i in range(1, soilvar.nsoi):
+    soilvar.z[i] = 0.5 * (soilvar.z_plus_onehalf[i-1] +
+                          soilvar.z_plus_onehalf[i])
 
 # Thickness between between z(i) and z(i+1)
 
-for i = 1: soilvar.nsoi-1
-    soilvar.dz_plus_onehalf(i) = soilvar.z(i) - soilvar.z(i+1)
+for i in range(soilvar.nsoi-1):
+    soilvar.dz_plus_onehalf[i] = soilvar.z[i] - soilvar.z[i+1]
 
-soilvar.dz_plus_onehalf(soilvar.nsoi) = 0.5 * soilvar.dz(soilvar.nsoi)
+soilvar.dz_plus_onehalf[soilvar.nsoi] = 0.5 * soilvar.dz[soilvar.nsoi]
 
 # Initial soil temperature (K) and unfrozen and frozen water (kg H2O/m2)
 
-for i = 1: soilvar.nsoi
+for i in range(soilvar.nsoi):
 
-# Temperature (K)
+    # Temperature (K)
 
-   soilvar.tsoi[i] = physcon.tfrz + 2.0
+    soilvar.tsoi[i] = physcon.tfrz + 2.0
 
     # Soil water at saturation (kg H2O/m2)
 
-       h2osoi_sat = soilvar.watsat[soilvar.soil_texture] * \
-           physcon.rhowat * soilvar.dz[i]
+    h2osoi_sat = soilvar.watsat[soilvar.soil_texture] * \
+        physcon.rhowat * soilvar.dz[i]
 
-           # Actual water content is some fraction of saturation
+    # Actual water content is some fraction of saturation
 
-           if soilvar.tsoi[i] > physcon.tfrz:
-                soilvar.h2osoi_ice[i] = 0
-                soilvar.h2osoi_liq[i] = 0.8 * h2osoi_sat
-            else:
-                soilvar.h2osoi_liq[i] = 0
-                soilvar.h2osoi_ice[i] = 0.8 * h2osoi_sat
+    if soilvar.tsoi[i] > physcon.tfrz:
+        soilvar.h2osoi_ice[i] = 0
+        soilvar.h2osoi_liq[i] = 0.8 * h2osoi_sat
+    else:
+        soilvar.h2osoi_liq[i] = 0
+        soilvar.h2osoi_ice[i] = 0.8 * h2osoi_sat
 
 # --- Time stepping loop to increment soil temperature
 
@@ -150,15 +153,16 @@ m = 0
 # This is repeated NDAY times.
 
 ntim = np.round(86400/dt)
-for iday = 1:
-    nday
+
+for iday in range(nday):
+
     print("day = {:6.0f}".format(iday))
-    for itim = 1:
-        ntim
 
-           # Hour of day
+    for itim in range(ntim):
 
-       hour = itim * (dt/86400 * 24)
+        # Hour of day
+
+        hour = itim * (dt/86400 * 24)
 
         # Surface temperature: Constant value TMEAN if TRANGE = 0. Otherwise, use a sine
         # wave with max (TMEAN + 1/2 TRANGE) at 2 pm and min (TMEAN - 1/2 TRANGE) at 2 am
