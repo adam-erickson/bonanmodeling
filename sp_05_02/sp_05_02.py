@@ -151,12 +151,12 @@ m = 0
 
 # Placeholders
 
-hour_vec = np.zeros()
-z_vec = np.zeros()
-tsoi_vec = np.zeros()
-hour_out = np.zeros()
-z_out = np.zeros()
-tsoi_out = np.zeros()
+hour_vec = np.zeros(nday)
+z_vec = np.zeros(nday)
+tsoi_vec = np.zeros(nday)
+hour_out = np.zeros(nday)
+z_out = np.zeros(nday)
+tsoi_out = np.zeros(nday)
 
 # Main loop is NTIM iterations per day with a time step of DT seconds.
 # This is repeated NDAY times.
