@@ -67,7 +67,7 @@ class SoilVar:
     # Soil depth (m) at center of layer i (negative distance from surface)
     z = None
     # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
-    z_plus_onehalf = None
+    z_plus_onehalf = np.zeros(self.nsoi)
     dz_plus_onehalf = None   # Thickness between between z(i) and z(i+1)
     tsoi = None              # Soil temperature (K)
     h2osoi_ice = None        # Fraction of soil water at saturation (kg H2O/m2)
@@ -154,6 +154,7 @@ m = 0
 hour_vec = np.zeros()
 z_vec = np.zeros()
 tsoi_vec = np.zeros()
+hour_out = np.zeros()
 z_out = np.zeros()
 tsoi_out = np.zeros()
 
