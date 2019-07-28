@@ -14,7 +14,6 @@ from matplotlib import pyplot as plt
 import soil_thermal_properties
 import soil_temperature
 
-
 # --- Physical constants in physcon structure
 
 
@@ -29,6 +28,9 @@ class PhysCon:
     tkwat = 0.57                     # Thermal conductivity of water (W/m/K)
     tkice = 2.29                     # Thermal conductivity of ice (W/m/K)
     hfus = 0.3337e6                  # Heat of fusion for water at 0 C (J/kg)
+
+
+physcon = PhysCon()
 
 # --- Initialize soil texture variables
 
@@ -58,22 +60,20 @@ class SoilVar:
                      10.0, 32.0, 52.0,  6.0, 22.0])  # Percent sand
     clay = np.array([3.0,  6.0, 10.0, 13.0, 18.0, 27.0,
                      34.0, 34.0, 42.0, 47.0, 58.0])  # Percent clay
-    soil_texture = None  # Soil texture class
-    method = None        # Use excess heat for phase change
-    nsoi = None          # Number of layers in soil profile
-    dz = None            # Soil layer thickness (m)
+    soil_texture = None      # Soil texture class
+    method = None            # Use excess heat for phase change
+    nsoi = None              # Number of layers in soil profile
+    dz = None                # Soil layer thickness (m)
     # Soil depth (m) at center of layer i (negative distance from surface)
-    z
+    z = None
     # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
-    z_plus_onehalf
-    dz_plus_onehalf      # Thickness between between z(i) and z(i+1)
-    tsoi                 # Soil temperature (K)
-    h2osoi_ice           # Fraction of soil water at saturation (kg H2O/m2)
-    h2osoi_liq           # Fraction of soil water at saturation (kg H2O/m2)
+    z_plus_onehalf = None
+    dz_plus_onehalf = None   # Thickness between between z(i) and z(i+1)
+    tsoi = None              # Soil temperature (K)
+    h2osoi_ice = None        # Fraction of soil water at saturation (kg H2O/m2)
+    h2osoi_liq = None        # Fraction of soil water at saturation (kg H2O/m2)
 
 
-# Initialize objects
-physcon = PhysCon()
 soilvar = SoilVar()
 
 # --- Model run control parameters
