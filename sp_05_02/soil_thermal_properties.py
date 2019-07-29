@@ -147,3 +147,5 @@ def soil_thermal_properties(physcon, soilvar):
             if soilvar.tsoi[i] < physcon.tfrz-tinc:
                 soilvar.cv[i] = cvf
                 soilvar.tk[i] = tkf
+
+    return soilvar

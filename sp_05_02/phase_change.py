@@ -173,3 +173,4 @@ def phase_change(physcon, soilvar, dt):
                 if np.abs(err) > 1e-03:
                     raise Exception(
                         "Soil temperature energy conservation error: thawing ice flux")
+    return soilvar

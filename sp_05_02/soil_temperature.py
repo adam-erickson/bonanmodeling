@@ -145,3 +145,5 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
     err = edif - soilvar.gsoi - soilvar.hfsoi
     if np.abs(err) > 1e-03:
         raise Exception("Soil temperature energy conservation error")
+
+    return soilvar
