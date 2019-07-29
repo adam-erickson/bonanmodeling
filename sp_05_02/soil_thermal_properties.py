@@ -1,3 +1,8 @@
+# Author: Adam Erickson, PhD, Washington State University
+
+import numpy as np
+
+
 def soil_thermal_properties(physcon, soilvar):
     """
     Calculate soil thermal conductivity and heat capacity
@@ -36,8 +41,8 @@ def soil_thermal_properties(physcon, soilvar):
 
         # --- Volumetric soil water and ice
 
-        watliq = soilvar.h2osoi_liq(i) / (physcon.rhowat * soilvar.dz(i))
-        watice = soilvar.h2osoi_ice(i) / (physcon.rhoice * soilvar.dz(i))
+        watliq = soilvar.h2osoi_liq[i] / (physcon.rhowat * soilvar.dz[i])
+        watice = soilvar.h2osoi_ice[i] / (physcon.rhoice * soilvar.dz[i])
 
         # Fraction of total volume that is liquid water
 
@@ -45,11 +50,11 @@ def soil_thermal_properties(physcon, soilvar):
 
         # Soil water relative to saturation
 
-        s = min((watliq + watice)/soilvar.watsat(k), 1)
+        s = np.min((watliq+watice) / soilvar.watsat[k], 1)
 
         # --- Dry thermal conductivity(W/m/K) from bulk density (kg/m3)
 
-        bd = 2700 * (1 - soilvar.watsat(k))
+        bd = 2700 * (1 - soilvar.watsat[k])
         tkdry = (0.135 * bd + 64.7) / (2700 - 0.947 * bd)
 
         # --- Soil solids thermal conducitivty(W/m/K)
@@ -60,7 +65,7 @@ def soil_thermal_properties(physcon, soilvar):
 
         # Quartz fraction
 
-        quartz = soilvar.sand(k) / 100
+        quartz = soilvar.sand[k] / 100
 
         # Thermal conductivity of other minerals(W/m/K)
 
@@ -75,30 +80,30 @@ def soil_thermal_properties(physcon, soilvar):
 
         # --- Saturated thermal conductivity(W/m/K) and unfrozen and frozen values
 
-        tksat = tksol**(1-soilvar.watsat(k)) * physcon.tkwat**(fliq*soilvar.watsat(k)
-                                                               ) * physcon.tkice**(soilvar.watsat(k)-fliq*soilvar.watsat(k))
-        tksat_u = tksol**(1-soilvar.watsat(k)) * \
-            physcon.tkwat**soilvar.watsat(k)
-        tksat_f = tksol**(1-soilvar.watsat(k)) * \
-            physcon.tkice**soilvar.watsat(k)
+        tksat = tksol**(1-soilvar.watsat[k]) * physcon.tkwat**(fliq*soilvar.watsat[k]
+                                                               ) * physcon.tkice**(soilvar.watsat[k]-fliq*soilvar.watsat[k])
+        tksat_u = tksol**(1-soilvar.watsat[k]) * \
+            physcon.tkwat**soilvar.watsat[k]
+        tksat_f = tksol**(1-soilvar.watsat[k]) * \
+            physcon.tkice**soilvar.watsat[k]
 
         # --- Kersten number and unfrozen and frozen values
 
-        if soilvar.sand(k) < 50:
+        if soilvar.sand[k] < 50:
             ke_u = np.log10(np.max(s, 0.1)) + 1
         else:
             ke_u = 0.7 * np.log10(np.max(s, 0.05)) + 1
 
         ke_f = s
 
-        if soilvar.tsoi(i) >= physcon.tfrz:
+        if soilvar.tsoi[i] >= physcon.tfrz:
             ke = ke_u
         else:
             ke = ke_f
 
         # --- Thermal conductivity(W/m/K) and unfrozen and frozen values
 
-        soilvar.tk(i) = (tksat - tkdry) * ke + tkdry
+        soilvar.tk[i] = (tksat - tkdry) * ke + tkdry
         tku = (tksat_u - tkdry) * ke_u + tkdry
         tkf = (tksat_f - tkdry) * ke_f + tkdry
 
@@ -108,10 +113,11 @@ def soil_thermal_properties(physcon, soilvar):
 
         # --- Heat capacity(J/m3/K) and unfrozen and frozen values
 
-        soilvar.cv(i) = (1 - soilvar.watsat(k)) * cvsol + physcon.cvwat * watliq + physcon.cvice * watice
-        cvu = (1 - soilvar.watsat(k)) * cvsol + \
+        soilvar.cv[i] = (1 - soilvar.watsat[k]) * cvsol + \
+            physcon.cvwat * watliq + physcon.cvice * watice
+        cvu = (1 - soilvar.watsat[k]) * cvsol + \
             physcon.cvwat * (watliq + watice)
-        cvf = (1 - soilvar.watsat(k)) * cvsol + \
+        cvf = (1 - soilvar.watsat[k]) * cvsol + \
             physcon.cvice * (watliq + watice)
 
         # --- Adjust heat capacity and thermal conductivity if using apparent heat capacity
@@ -129,14 +135,15 @@ def soil_thermal_properties(physcon, soilvar):
 
             # Heat capacity and thermal conductivity
 
-            if soilvar.tsoi(i) > (physcon.tfrz+tinc):
-                soilvar.cv(i) = cvu
-                soilvar.tk(i) = tku
+            if soilvar.tsoi[i] > (physcon.tfrz+tinc):
+                soilvar.cv[i] = cvu
+                soilvar.tk[i] = tku
 
-            if soilvar.tsoi(i) >= physcon.tfrz-tinc & soilvar.tsoi(i) <= physcon.tfrz+tinc:
-                soilvar.cv(i) = (cvf + cvu) / 2 + ql / (2 * tinc)
-                soilvar.tk(i) = tkf + (tku - tkf) * (soilvar.tsoi(i) - physcon.tfrz + tinc) / (2 * tinc)
+            if soilvar.tsoi[i] >= physcon.tfrz-tinc & soilvar.tsoi[i] <= physcon.tfrz+tinc:
+                soilvar.cv[i] = (cvf + cvu) / 2 + ql / (2 * tinc)
+                soilvar.tk[i] = tkf + (tku - tkf) * (soilvar.tsoi[i] -
+                                                     physcon.tfrz + tinc) / (2 * tinc)
 
-            if soilvar.tsoi(i) < physcon.tfrz-tinc:
-                soilvar.cv(i) = cvf
-                soilvar.tk(i) = tkf
+            if soilvar.tsoi[i] < physcon.tfrz-tinc:
+                soilvar.cv[i] = cvf
+                soilvar.tk[i] = tkf
