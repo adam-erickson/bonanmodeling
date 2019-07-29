@@ -147,7 +147,7 @@ m = 0
 # Main loop is NTIM iterations per day with a time step of DT seconds.
 # This is repeated NDAY times.
 
-ntim = np.round(86400/dt)
+ntim = np.int(np.round(86400/dt))
 
 # Placeholders
 
