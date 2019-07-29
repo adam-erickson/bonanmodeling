@@ -47,7 +47,7 @@ class SoilVar:
     11: clay
     """
 
-    def __init__(self):
+    def __init__(self, nsoi, dz, soil_texture, method):
         # Volumetric soil water content at saturation (porosity)
         # (Clapp and Hornberger. 1978. Water Resources Research 14:601-604)
         self.watsat = np.array([0.395, 0.410, 0.435, 0.485,
@@ -58,27 +58,31 @@ class SoilVar:
                               10.0, 32.0, 52.0,  6.0, 22.0])  # Percent sand
         self.clay = np.array([3.0,  6.0, 10.0, 13.0, 18.0, 27.0,
                               34.0, 34.0, 42.0, 47.0, 58.0])  # Percent clay
-        self.soil_texture = None      # Soil texture class
-        self.method = None            # Use excess heat for phase change
-        self.nsoi = None              # Number of layers in soil profile
-        self.dz = None                # Soil layer thickness (m)
+        self.soil_texture = soil_texture      # Soil texture class
+        self.method = method            # Use excess heat for phase change
+        self.nsoi = nsoi              # Number of layers in soil profile
+        # Soil layer thickness (m)
+        self.dz = np.full(shape=(nsoi,), fill_value=dz)
         # Soil depth (m) at center of layer i (negative distance from surface)
-        self.z = np.zeros(self.nsoi)
+        self.z = np.zeros(nsoi)
         # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
-        self.z_plus_onehalf = np.zeros(self.nsoi)
+        self.z_plus_onehalf = np.zeros(nsoi)
         # Thickness between between z(i) and z(i+1)
-        self.dz_plus_onehalf = np.zeros(self.nsoi)
-        self.tsoi = np.zeros(self.nsoi)  # Soil temperature (K)
+        self.dz_plus_onehalf = np.zeros(nsoi)
+        self.tsoi = np.zeros(nsoi)  # Soil temperature (K)
         # Fraction of soil water at saturation (kg H2O/m2)
-        self.h2osoi_ice = np.zeros(self.nsoi)
+        self.h2osoi_ice = np.zeros(nsoi)
         # Fraction of soil water at saturation (kg H2O/m2)
-        self.h2osoi_liq = np.zeros(self.nsoi)
+        self.h2osoi_liq = np.zeros(nsoi)
 
 
-# --- Initialize objects
+# --- Initialize physical constants
 
 physcon = PhysCon()
-soilvar = SoilVar()
+
+# --- Initialize soil variables: 120 layers in soil profile, soil layer thickness of 0.025 m, sand texture, and the 'excess-heat' phase-change method; 'apparent-heat-capacity' is also available
+
+soilvar = SoilVar(nsoi=120, dz=0.025, soil_texture=1, method='excess-heat')
 
 # --- Model run control parameters
 
@@ -87,20 +91,8 @@ tmean = physcon.tfrz + 15.0
 trange = 10.0                   # Temperature range for diurnal cycle (K)
 dt = 1800                       # Time step (seconds)
 nday = 200                      # Number of days
-soilvar.soil_texture = 1        # Soil texture class: sand
-soilvar.method = 'excess-heat'  # Use excess heat for phase change
-# soilvar.soil_texture = 11       # Soil texture class: clay
-# soilvar.method = 'apparent-heat-capacity' # Use apparent heat capacity for phase change
 
 # --- Initialize soil layer variables
-
-# Number of layers in soil profile
-
-soilvar.nsoi = 120
-
-# Soil layer thickness (m)
-
-soilvar.dz = np.full(shape=(soilvar.nsoi,), fill_value=0.025)
 
 # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
 
