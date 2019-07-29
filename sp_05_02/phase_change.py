@@ -1,175 +1,175 @@
-function [soilvar] = phase_change (physcon, soilvar, dt)
+# Author: Adam Erickson, PhD, Washington State University
 
-# Adjust temperatures for phase change. Freeze or melt ice using
-# energy excess or deficit needed to change temperature to the
-# freezing point.
+import numpy as np
 
-# ------------------------------------------------------
-# Input
-#   dt                      ! Time step (s)
-#   physcon.hfus            ! Heat of fusion for water at 0 C (J/kg)
-#   physcon.tfrz            ! Freezing point of water (K)
-#   soilvar.nsoi            ! Number of soil layers
-#   soilvar.dz              ! Soil layer thickness (m)
-#   soilvar.cv              ! Volumetric heat capacity (J/m3/K)
-#
-# Input/output
-#   soilvar.tsoi            ! Soil temperature (K)
-#   soilvar.h2osoi_liq      ! Unfrozen water, liquid (kg H2O/m2)
-#   soilvar.h2osoi_ice      ! Frozen water, ice (kg H2O/m2)
-#
-# Output
-#   soilvar.hfsoi           ! Soil phase change energy flux (W/m2)
-# ------------------------------------------------------
 
-# --- Initialize total soil heat of fusion to zero
+def phase_change(physcon, soilvar, dt):
+    """
+    Adjust temperatures for phase change. Freeze or melt ice using
+    energy excess or deficit needed to change temperature to the
+    freezing point.
 
-soilvar.hfsoi = 0;
+    ------------------------------------------------------
+    # Input
+      dt                      ! Time step (s)
+      physcon.hfus            ! Heat of fusion for water at 0 C (J/kg)
+      physcon.tfrz            ! Freezing point of water (K)
+      soilvar.nsoi            ! Number of soil layers
+      soilvar.dz              ! Soil layer thickness (m)
+      soilvar.cv              ! Volumetric heat capacity (J/m3/K)
 
-# --- Now loop over all soil layers to calculate phase change
+    # Input/output
+      soilvar.tsoi            ! Soil temperature (K)
+      soilvar.h2osoi_liq      ! Unfrozen water, liquid (kg H2O/m2)
+      soilvar.h2osoi_ice      ! Frozen water, ice (kg H2O/m2)
 
-for i = 1:soilvar.nsoi
+    # Output
+      soilvar.hfsoi           ! Soil phase change energy flux (W/m2)
+    ------------------------------------------------------
+    """
 
-   # --- Save variables prior to phase change
+    # --- Initialize total soil heat of fusion to zero
 
-   wliq0 = soilvar.h2osoi_liq(i);     # Amount of liquid water before phase change
-   wice0 = soilvar.h2osoi_ice(i);     # Amount of ice before phase change
-   wmass0 = wliq0 + wice0;            # Amount of total water before phase change
-   tsoi0 = soilvar.tsoi(i);           # Soil temperature before phase change
+    soilvar.hfsoi = 0
 
-   # --- Identify melting or freezing layers and set temperature to freezing
+    # --- Now loop over all soil layers to calculate phase change
 
-   # Default condition is no phase change (imelt = 0)
+    for i in range(soilvar.nsoi):
 
-   imelt = 0;
+        # --- Save variables prior to phase change
 
-   # Melting: if ice exists above melt point, melt some to liquid.
-   # Identify melting by imelt = 1
+        # Amount of liquid water before phase change
+        wliq0 = soilvar.h2osoi_liq[i]
+        wice0 = soilvar.h2osoi_ice[i]     # Amount of ice before phase change
+        wmass0 = wliq0 + wice0            # Amount of total water before phase change
+        # Soil temperature before phase change
+        tsoi0 = soilvar.tsoi[i]
 
-   if (soilvar.h2osoi_ice(i) > 0 & soilvar.tsoi(i) > physcon.tfrz)
-      imelt = 1;
-      soilvar.tsoi(i) = physcon.tfrz;
-   end
+        # --- Identify melting or freezing layers and set temperature to freezing
 
-   # Freezing: if liquid exists below melt point, freeze some to ice.
-   # Identify freezing by imelt = 2
+        # Default condition is no phase change (imelt = 0)
 
-   if (soilvar.h2osoi_liq(i) > 0 & soilvar.tsoi(i) < physcon.tfrz)
-      imelt = 2;
-      soilvar.tsoi(i) = physcon.tfrz;
-   end
+        imelt = 0
 
-   # --- Calculate energy for freezing or melting
+        # Melting: if ice exists above melt point, melt some to liquid.
+        # Identify melting by imelt = 1
 
-   # The energy for freezing or melting (W/m2) is assessed from the energy
-   # excess or deficit needed to change temperature to the freezing point.
-   # This is a potential energy flux, because cannot melt more ice than is
-   # present or freeze more liquid water than is present.
-   #
-   # heat_flux_pot > 0: freezing; heat_flux_pot < 0: melting
+        if soilvar.h2osoi_ice[i] > 0 & soilvar.tsoi[i] > physcon.tfrz:
+            imelt = 1
+            soilvar.tsoi[i] = physcon.tfrz
 
-   if (imelt > 0)
-      heat_flux_pot = (soilvar.tsoi(i) - tsoi0) * soilvar.cv(i) * soilvar.dz(i) / dt;
-   else
-      heat_flux_pot = 0;
-   end
+        # Freezing: if liquid exists below melt point, freeze some to ice.
+        # Identify freezing by imelt = 2
 
-   # Maximum energy for melting or freezing (W/m2)
+        if soilvar.h2osoi_liq[i] > 0 & soilvar.tsoi[i] < physcon.tfrz:
+            imelt = 2
+            soilvar.tsoi[i] = physcon.tfrz
 
-   if (imelt == 1)
-      heat_flux_max = -soilvar.h2osoi_ice(i) * physcon.hfus / dt;
-   end
+        # --- Calculate energy for freezing or melting
 
-   if (imelt == 2)
-      heat_flux_max = soilvar.h2osoi_liq(i) * physcon.hfus / dt;
-   end
+        # The energy for freezing or melting (W/m2) is assessed from the energy
+        # excess or deficit needed to change temperature to the freezing point.
+        # This is a potential energy flux, because cannot melt more ice than is
+        # present or freeze more liquid water than is present.
+        #
+        # heat_flux_pot > 0: freezing; heat_flux_pot < 0: melting
 
-   # --- Now freeze or melt ice
+        if imelt > 0:
+            heat_flux_pot = (soilvar.tsoi[i] - tsoi0) * \
+                soilvar.cv[i] * soilvar.dz[i] / dt
+        else:
+            heat_flux_pot = 0
 
-   if (imelt > 0)
+        # Maximum energy for melting or freezing (W/m2)
 
-      # Change in ice (kg H2O/m2/s): freeze (+) or melt (-)
+        if imelt == 1:
+            heat_flux_max = -soilvar.h2osoi_ice[i] * physcon.hfus / dt
+        elif imelt == 2:
+            heat_flux_max = soilvar.h2osoi_liq[i] * physcon.hfus / dt
 
-      ice_flux = heat_flux_pot / physcon.hfus;
+        # --- Now freeze or melt ice
 
-      # Update ice (kg H2O/m2)
+        if imelt > 0:
 
-      soilvar.h2osoi_ice(i) = wice0 + ice_flux * dt;
+            # Change in ice (kg H2O/m2/s): freeze (+) or melt (-)
 
-      # Cannot melt more ice than is present
+            ice_flux = heat_flux_pot / physcon.hfus
 
-      soilvar.h2osoi_ice(i) = max(0, soilvar.h2osoi_ice(i));
+            # Update ice (kg H2O/m2)
 
-      # Ice cannot exceed total water that is present
+            soilvar.h2osoi_ice[i] = wice0 + ice_flux * dt
 
-      soilvar.h2osoi_ice(i) = min(wmass0, soilvar.h2osoi_ice(i));
+            # Cannot melt more ice than is present
 
-      # Update liquid water (kg H2O/m2) for change in ice
+            soilvar.h2osoi_ice[i] = np.max(0, soilvar.h2osoi_ice[i])
 
-      soilvar.h2osoi_liq(i) = max(0, (wmass0-soilvar.h2osoi_ice(i)));
+            # Ice cannot exceed total water that is present
 
-      # Actual energy flux from phase change (W/m2). This is equal to
-      # heat_flux_pot except if tried to melt too much ice.
+            soilvar.h2osoi_ice[i] = np.min(wmass0, soilvar.h2osoi_ice[i])
 
-      heat_flux = physcon.hfus * (soilvar.h2osoi_ice(i) - wice0) / dt;
+            # Update liquid water (kg H2O/m2) for change in ice
 
-      # Sum energy flux from phase change (W/m2)
+            soilvar.h2osoi_liq[i] = np.max(0, (wmass0-soilvar.h2osoi_ice[i]))
 
-      soilvar.hfsoi = soilvar.hfsoi + heat_flux;
+            # Actual energy flux from phase change (W/m2). This is equal to
+            # heat_flux_pot except if tried to melt too much ice.
 
-      # Residual energy not used in phase change is added to soil temperature
+            heat_flux = physcon.hfus * (soilvar.h2osoi_ice(i) - wice0) / dt
 
-      residual = heat_flux_pot - heat_flux;
-      soilvar.tsoi(i) = soilvar.tsoi(i) - residual * dt / (soilvar.cv(i) * soilvar.dz(i));
+            # Sum energy flux from phase change (W/m2)
 
-      # Error check: make sure actual phase change does not exceed permissible phase change
+            soilvar.hfsoi = soilvar.hfsoi + heat_flux
 
-      if (abs(heat_flux) > abs(heat_flux_max))
-         error ('Soil temperature energy conservation error: phase change')
-      end
+            # Residual energy not used in phase change is added to soil temperature
 
-      # Freezing: make sure actual phase change does not exceed permissible phase change
-      # and that the change in ice does not exceed permissible change
+            residual = heat_flux_pot - heat_flux
+            soilvar.tsoi[i] = soilvar.tsoi[i] - residual * \
+                dt / (soilvar.cv[i] * soilvar.dz[i])
 
-      if (imelt == 2)
+            # Error check: make sure actual phase change does not exceed permissible phase change
 
-         # Energy flux (W/m2)
+            if np.abs(heat_flux) > np.abs(heat_flux_max):
+                raise Exception(
+                    "Soil temperature energy conservation error: phase change")
 
-         constraint = min(heat_flux_pot, heat_flux_max);
-         err = heat_flux - constraint;
-         if (abs(err) > 1e-03)
-            error ('Soil temperature energy conservation error: freezing energy flux')
-         end
+            # Freezing: make sure actual phase change does not exceed permissible phase change
+            # and that the change in ice does not exceed permissible change
 
-         # Change in ice (kg H2O/m2)
+            if imelt == 2:
 
-         err = (soilvar.h2osoi_ice(i) - wice0) - constraint / physcon.hfus * dt;
-         if (abs(err) > 1e-03)
-            error ('Soil temperature energy conservation error: freezing ice flux')
-         end
-      end
+                # Energy flux (W/m2)
 
-      # Thawing: make sure actual phase change does not exceed permissible phase change
-      # and that the change in ice does not exceed permissible change
+                constraint = np.min(heat_flux_pot, heat_flux_max)
+                err = heat_flux - constraint
+                if np.abs(err) > 1e-03:
+                    raise Exception(
+                        "Soil temperature energy conservation error: freezing energy flux")
 
-      if (imelt == 1)
+                # Change in ice (kg H2O/m2)
 
-         # Energy flux (W/m2)
+                err = (soilvar.h2osoi_ice(i) - wice0) - \
+                    constraint / physcon.hfus * dt
+                if np.abs(err) > 1e-03:
+                    raise Exception(
+                        "Soil temperature energy conservation error: freezing ice flux")
 
-         constraint = max(heat_flux_pot, heat_flux_max);
-         err = heat_flux - constraint;
-         if (abs(err) > 1e-03)
-            error ('Soil temperature energy conservation error: thawing energy flux')
-         end
+            # Thawing: make sure actual phase change does not exceed permissible phase change
+            # and that the change in ice does not exceed permissible change
 
-         # Change in ice (kg H2O/m2)
+            elif imelt == 1:
 
-         err = (soilvar.h2osoi_ice(i) - wice0) - constraint / physcon.hfus * dt;
-         if (abs(err) > 1e-03)
-            error ('Soil temperature energy conservation error: thawing ice flux')
-         end
-      end
+                # Energy flux (W/m2)
 
-   end
+                constraint = np.max(heat_flux_pot, heat_flux_max)
+                err = heat_flux - constraint
+                if np.abs(err) > 1e-03:
+                    raise Exception(
+                        "Soil temperature energy conservation error: thawing energy flux")
 
-end
+                # Change in ice (kg H2O/m2)
+
+                err = (soilvar.h2osoi_ice(i) - wice0) - \
+                    constraint / physcon.hfus * dt
+                if np.abs(err) > 1e-03:
+                    raise Exception(
+                        "Soil temperature energy conservation error: thawing ice flux")
