@@ -34,17 +34,17 @@ class PhysCon:
 class SoilVar:
     """
     Soil texture classes (Cosby et al. 1984. Water Resources Research 20:682-690):
-     1: sand
-     2: loamy sand
-     3: sandy loam
-     4: silty loam
-     5: loam
-     6: sandy clay loam
-     7  silty clay loam
-     8: clay loam
-     9: sandy clay
-    10: silty clay
-    11: clay
+     0: sand
+     1: loamy sand
+     2: sandy loam
+     3: silty loam
+     4: loam
+     5: sandy clay loam
+     6  silty clay loam
+     7: clay loam
+     8: sandy clay
+     9: silty clay
+    10: clay
     """
 
     def __init__(self, nsoi, dz, soil_texture, method):
@@ -58,9 +58,9 @@ class SoilVar:
                               10.0, 32.0, 52.0,  6.0, 22.0])  # Percent sand
         self.clay = np.array([3.0,  6.0, 10.0, 13.0, 18.0, 27.0,
                               34.0, 34.0, 42.0, 47.0, 58.0])  # Percent clay
-        self.soil_texture = soil_texture      # Soil texture class
-        self.method = method            # Use excess heat for phase change
-        self.nsoi = nsoi              # Number of layers in soil profile
+        self.soil_texture = soil_texture  # Soil texture class
+        self.method = method  # Use excess heat for phase change
+        self.nsoi = nsoi  # Number of layers in soil profile
         # Soil layer thickness (m)
         self.dz = np.full(shape=(nsoi,), fill_value=dz)
         # Soil depth (m) at center of layer i (negative distance from surface)
@@ -82,7 +82,7 @@ physcon = PhysCon()
 
 # --- Initialize soil variables: 120 layers in soil profile, soil layer thickness of 0.025 m, sand texture, and the 'excess-heat' phase-change method; 'apparent-heat-capacity' is also available
 
-soilvar = SoilVar(nsoi=120, dz=0.025, soil_texture=1, method='excess-heat')
+soilvar = SoilVar(nsoi=120, dz=0.025, soil_texture=0, method='excess-heat')
 
 # --- Model run control parameters
 
