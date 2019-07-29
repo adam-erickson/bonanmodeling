@@ -44,9 +44,9 @@ def tridiagonal_solver(a, b, c, d, n):
 
     # --- Backward substitution (N -> 1) to solve for U
 
-    u[n] = f[n]
+    u[n-1] = f[n-1]
 
-    for i in range(n-1, 1, -1):
+    for i in range(n-2, 0-1, -1):
         u[i] = f[i] - e[i] * u[i+1]
 
     return u

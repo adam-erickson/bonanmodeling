@@ -50,7 +50,7 @@ def soil_thermal_properties(physcon, soilvar):
 
         # Soil water relative to saturation
 
-        s = np.min((watliq+watice) / soilvar.watsat[k], 1)
+        s = np.min([(watliq+watice) / soilvar.watsat[k], 1])
 
         # --- Dry thermal conductivity(W/m/K) from bulk density (kg/m3)
 
@@ -90,9 +90,9 @@ def soil_thermal_properties(physcon, soilvar):
         # --- Kersten number and unfrozen and frozen values
 
         if soilvar.sand[k] < 50:
-            ke_u = np.log10(np.max(s, 0.1)) + 1
+            ke_u = np.log10(np.max([s, 0.1])) + 1
         else:
-            ke_u = 0.7 * np.log10(np.max(s, 0.05)) + 1
+            ke_u = 0.7 * np.log10(np.max([s, 0.05])) + 1
 
         ke_f = s
 

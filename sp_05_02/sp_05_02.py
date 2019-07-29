@@ -62,18 +62,22 @@ class SoilVar:
         self.method = method  # Use excess heat for phase change
         self.nsoi = nsoi  # Number of layers in soil profile
         # Soil layer thickness (m)
-        self.dz = np.full(shape=(nsoi,), fill_value=dz)
+        self.dz = np.full(shape=nsoi, fill_value=dz)
         # Soil depth (m) at center of layer i (negative distance from surface)
-        self.z = np.zeros(nsoi)
+        self.z = np.zeros(shape=nsoi)
         # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
-        self.z_plus_onehalf = np.zeros(nsoi)
+        self.z_plus_onehalf = np.zeros(shape=nsoi)
         # Thickness between between z(i) and z(i+1)
-        self.dz_plus_onehalf = np.zeros(nsoi)
-        self.tsoi = np.zeros(nsoi)  # Soil temperature (K)
+        self.dz_plus_onehalf = np.zeros(shape=nsoi)
+        self.tsoi = np.zeros(shape=nsoi)  # Soil temperature (K)
         # Fraction of soil water at saturation (kg H2O/m2)
-        self.h2osoi_ice = np.zeros(nsoi)
+        self.h2osoi_ice = np.zeros(shape=nsoi)
         # Fraction of soil water at saturation (kg H2O/m2)
-        self.h2osoi_liq = np.zeros(nsoi)
+        self.h2osoi_liq = np.zeros(shape=nsoi)
+        # Thermal conducitivty(W/m/K)
+        self.tk = np.zeros(shape=nsoi)
+        # Volumetric heat capacity(J/m3/K)
+        self.cv = np.zeros(shape=nsoi)
 
 
 # --- Initialize physical constants

@@ -59,11 +59,11 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
     """
 
     tsoi0 = np.zeros(soilvar.nsoi)
-    tk_plus_onehalf = np.zeros(soilvar.nsoi-1)
-    a = np.zeros(soilvar.nsoi-1)
-    c = np.zeros(soilvar.nsoi-1)
-    b = np.zeros(soilvar.nsoi-1)
-    d = np.zeros(soilvar.nsoi-1)
+    tk_plus_onehalf = np.zeros(soilvar.nsoi)
+    a = np.zeros(soilvar.nsoi)
+    c = np.zeros(soilvar.nsoi)
+    b = np.zeros(soilvar.nsoi)
+    d = np.zeros(soilvar.nsoi)
 
     # --- Save current soil temperature for energy conservation check
 
@@ -99,7 +99,7 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
 
     # Bottom soil layer with zero heat flux
 
-    i = soilvar.nsoi
+    i = soilvar.nsoi-1
     m = soilvar.cv[i] * soilvar.dz[i] / dt
     a[i] = -tk_plus_onehalf[i-1] / soilvar.dz_plus_onehalf[i-1]
     c[i] = 0

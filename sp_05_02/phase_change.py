@@ -54,14 +54,14 @@ def phase_change(physcon, soilvar, dt):
         # Melting: if ice exists above melt point, melt some to liquid.
         # Identify melting by imelt = 1
 
-        if soilvar.h2osoi_ice[i] > 0 & soilvar.tsoi[i] > physcon.tfrz:
+        if soilvar.h2osoi_ice[i] > 0 and soilvar.tsoi[i] > physcon.tfrz:
             imelt = 1
             soilvar.tsoi[i] = physcon.tfrz
 
         # Freezing: if liquid exists below melt point, freeze some to ice.
         # Identify freezing by imelt = 2
 
-        if soilvar.h2osoi_liq[i] > 0 & soilvar.tsoi[i] < physcon.tfrz:
+        if soilvar.h2osoi_liq[i] > 0 and soilvar.tsoi[i] < physcon.tfrz:
             imelt = 2
             soilvar.tsoi[i] = physcon.tfrz
 
