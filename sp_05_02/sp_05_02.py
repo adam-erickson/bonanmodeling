@@ -11,76 +11,76 @@ import numpy as np
 from matplotlib import ticker
 from matplotlib import pyplot as plt
 
-import soil_thermal_properties
-import soil_temperature
+from soil_thermal_properties import soil_thermal_properties
+from soil_temperature import soil_temperature
 
-# --- Physical constants in physcon structure
 
+# --- Physical constant and soil texture variable classes
 
 class PhysCon:
-    tfrz = 273.15          # Freezing point of water (K)
-    cwat = 4188.0          # Specific heat of water (J/kg/K)
-    cice = 2117.27         # Specific heat of ice (J/kg/K)
-    rhowat = 1000.0        # Density of water (kg/m3)
-    rhoice = 917.0         # Density of ice (kg/m3)
-    cvwat = cwat * rhowat  # Heat capacity of water (J/m3/K)
-    cvice = cice * rhoice  # Heat capacity of ice (J/m3/K)
-    tkwat = 0.57           # Thermal conductivity of water (W/m/K)
-    tkice = 2.29           # Thermal conductivity of ice (W/m/K)
-    hfus = 0.3337e6        # Heat of fusion for water at 0 C (J/kg)
-
-
-physcon = PhysCon()
-
-# --- Initialize soil texture variables
-
-# Soil texture classes (Cosby et al. 1984. Water Resources Research 20:682-690)
-
-#  1: sand
-#  2: loamy sand
-#  3: sandy loam
-#  4: silty loam
-#  5: loam
-#  6: sandy clay loam
-#  7  silty clay loam
-#  8: clay loam
-#  9: sandy clay
-# 10: silty clay
-# 11: clay
+    def __init__(self):
+        self.tfrz = 273.15          # Freezing point of water (K)
+        self.cwat = 4188.0          # Specific heat of water (J/kg/K)
+        self.cice = 2117.27         # Specific heat of ice (J/kg/K)
+        self.rhowat = 1000.0        # Density of water (kg/m3)
+        self.rhoice = 917.0         # Density of ice (kg/m3)
+        self.cvwat = self.cwat * self.rhowat  # Heat capacity of water (J/m3/K)
+        self.cvice = self.cice * self.rhoice  # Heat capacity of ice (J/m3/K)
+        self.tkwat = 0.57           # Thermal conductivity of water (W/m/K)
+        self.tkice = 2.29           # Thermal conductivity of ice (W/m/K)
+        self.hfus = 0.3337e6        # Heat of fusion for water at 0 C (J/kg)
 
 
 class SoilVar:
-    # Volumetric soil water content at saturation (porosity)
-    # (Clapp and Hornberger. 1978. Water Resources Research 14:601-604)
-    watsat = np.array([0.395, 0.410, 0.435, 0.485,
-                       0.451, 0.420, 0.477, 0.476, 0.426, 0.492, 0.482])
-    silt = np.array([5.0, 12.0, 32.0, 70.0, 39.0, 15.0,
-                     56.0, 34.0,  6.0, 47.0, 20.0])  # Percent silt
-    sand = np.array([92.0, 82.0, 58.0, 17.0, 43.0, 58.0,
-                     10.0, 32.0, 52.0,  6.0, 22.0])  # Percent sand
-    clay = np.array([3.0,  6.0, 10.0, 13.0, 18.0, 27.0,
-                     34.0, 34.0, 42.0, 47.0, 58.0])  # Percent clay
-    soil_texture = None      # Soil texture class
-    method = None            # Use excess heat for phase change
-    nsoi = None              # Number of layers in soil profile
-    dz = None                # Soil layer thickness (m)
-    # Soil depth (m) at center of layer i (negative distance from surface)
-    z = np.zeros(nsoi)
-    # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
-    z_plus_onehalf = np.zeros(nsoi)
-    # Thickness between between z(i) and z(i+1)
-    dz_plus_onehalf = np.zeros(nsoi)
-    tsoi = np.zeros(nsoi)  # Soil temperature (K)
-    # Fraction of soil water at saturation (kg H2O/m2)
-    h2osoi_ice = np.zeros(nsoi)
-    # Fraction of soil water at saturation (kg H2O/m2)
-    h2osoi_liq = np.zeros(nsoi)
+    """
+    Soil texture classes (Cosby et al. 1984. Water Resources Research 20:682-690):
+     1: sand
+     2: loamy sand
+     3: sandy loam
+     4: silty loam
+     5: loam
+     6: sandy clay loam
+     7  silty clay loam
+     8: clay loam
+     9: sandy clay
+    10: silty clay
+    11: clay
+    """
+
+    def __init__(self):
+        # Volumetric soil water content at saturation (porosity)
+        # (Clapp and Hornberger. 1978. Water Resources Research 14:601-604)
+        self.watsat = np.array([0.395, 0.410, 0.435, 0.485,
+                                0.451, 0.420, 0.477, 0.476, 0.426, 0.492, 0.482])
+        self.silt = np.array([5.0, 12.0, 32.0, 70.0, 39.0, 15.0,
+                              56.0, 34.0,  6.0, 47.0, 20.0])  # Percent silt
+        self.sand = np.array([92.0, 82.0, 58.0, 17.0, 43.0, 58.0,
+                              10.0, 32.0, 52.0,  6.0, 22.0])  # Percent sand
+        self.clay = np.array([3.0,  6.0, 10.0, 13.0, 18.0, 27.0,
+                              34.0, 34.0, 42.0, 47.0, 58.0])  # Percent clay
+        self.soil_texture = None      # Soil texture class
+        self.method = None            # Use excess heat for phase change
+        self.nsoi = None              # Number of layers in soil profile
+        self.dz = None                # Soil layer thickness (m)
+        # Soil depth (m) at center of layer i (negative distance from surface)
+        self.z = np.zeros(self.nsoi)
+        # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
+        self.z_plus_onehalf = np.zeros(self.nsoi)
+        # Thickness between between z(i) and z(i+1)
+        self.dz_plus_onehalf = np.zeros(self.nsoi)
+        self.tsoi = np.zeros(self.nsoi)  # Soil temperature (K)
+        # Fraction of soil water at saturation (kg H2O/m2)
+        self.h2osoi_ice = np.zeros(self.nsoi)
+        # Fraction of soil water at saturation (kg H2O/m2)
+        self.h2osoi_liq = np.zeros(self.nsoi)
 
 
+# --- Initialize objects
+
+physcon = PhysCon()
 soilvar = SoilVar()
 
 # --- Model run control parameters
-
 
 # Mean daily air temperature for diurnal cycle (K)
 tmean = physcon.tfrz + 15.0
@@ -88,9 +88,9 @@ trange = 10.0                   # Temperature range for diurnal cycle (K)
 dt = 1800                       # Time step (seconds)
 nday = 200                      # Number of days
 soilvar.soil_texture = 1        # Soil texture class: sand
-soilvar.method = "excess-heat"  # Use excess heat for phase change
-# soilvar.soil_texture = 11         # Soil texture class: clay
-# soilvar.method = "apparent-heat-capacity" # Use apparent heat capacity for phase change
+soilvar.method = 'excess-heat'  # Use excess heat for phase change
+# soilvar.soil_texture = 11       # Soil texture class: clay
+# soilvar.method = 'apparent-heat-capacity' # Use apparent heat capacity for phase change
 
 # --- Initialize soil layer variables
 
@@ -152,19 +152,19 @@ for i in range(soilvar.nsoi):
 
 m = 0
 
-# Placeholders
-
-hour_vec = np.zeros(nday)
-z_vec = np.zeros(nday)
-tsoi_vec = np.zeros(nday)
-hour_out = np.zeros(nday)
-z_out = np.zeros(nday)
-tsoi_out = np.zeros(nday)
-
 # Main loop is NTIM iterations per day with a time step of DT seconds.
 # This is repeated NDAY times.
 
 ntim = np.round(86400/dt)
+
+# Placeholders
+
+hour_vec = np.zeros(ntim)
+z_vec = np.zeros(ntim)
+tsoi_vec = np.zeros(ntim)
+hour_out = np.zeros(ntim)
+z_out = np.zeros(ntim)
+tsoi_out = np.zeros(ntim)
 
 for iday in range(nday):
 
@@ -232,6 +232,7 @@ fig, ax = plt.subplots()
 CS = ax.contour(x=hour_out, y=z_out, z=tsoi_out)
 ax.clabel(CS, inline=1, fontsize=10)
 ax.set_title("Simplest default with labels")
+plt.show()
 
 # Replicate Matlab style
 # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.1))
