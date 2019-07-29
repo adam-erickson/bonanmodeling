@@ -26,18 +26,18 @@ def tridiagonal_solver(a, b, c, d, n):
         U_i = F_i - E_i * U_i+1
     """
 
-    e = np.zeros(n-1)
+    e = np.zeros(n)
     f = np.zeros(n)
-    u = np.zeros(n-1)
+    u = np.zeros(n)
 
     # --- Forward sweep (1 -> N) to get E and F
 
-    e[1] = c[1] / b[1]
+    e[0] = c[0] / b[0]
 
     for i in range(1, n-1, 1):
         e[i] = c[i] / (b[i] - a[i] * e[i-1])
 
-    f[1] = d[1] / b[1]
+    f[0] = d[0] / b[0]
 
     for i in range(1, n, 1):
         f[i] = (d[i] - a[i] * f[i-1]) / (b[i] - a[i] * e[i-1])
