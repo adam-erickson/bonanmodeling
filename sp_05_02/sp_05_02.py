@@ -114,7 +114,7 @@ for i in range(1, soilvar.nsoi):
 for i in range(soilvar.nsoi-1):
     soilvar.dz_plus_onehalf[i] = soilvar.z[i] - soilvar.z[i+1]
 
-soilvar.dz_plus_onehalf[soilvar.nsoi] = 0.5 * soilvar.dz[soilvar.nsoi]
+soilvar.dz_plus_onehalf[soilvar.nsoi-1] = 0.5 * soilvar.dz[soilvar.nsoi-1]
 
 # Initial soil temperature (K) and unfrozen and frozen water (kg H2O/m2)
 
