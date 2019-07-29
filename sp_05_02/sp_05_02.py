@@ -104,14 +104,14 @@ soilvar.dz = np.full(shape=(soilvar.nsoi,), fill_value=0.025)
 
 # Soil depth (m) at i+1/2 interface between layers i and i+1 (negative distance from surface)
 
-soilvar.z_plus_onehalf[1] = -soilvar.dz[1]
+soilvar.z_plus_onehalf[0] = -soilvar.dz[0]
 
 for i in range(1, soilvar.nsoi):
     soilvar.z_plus_onehalf[i] = soilvar.z_plus_onehalf[i-1] - soilvar.dz[i]
 
 # Soil depth (m) at center of layer i (negative distance from surface)
 
-soilvar.z[1] = 0.5 * soilvar.z_plus_onehalf[1]
+soilvar.z[0] = 0.5 * soilvar.z_plus_onehalf[0]
 
 for i in range(1, soilvar.nsoi):
     soilvar.z[i] = 0.5 * (soilvar.z_plus_onehalf[i-1] +
