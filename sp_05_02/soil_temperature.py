@@ -73,8 +73,9 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
     # --- Thermal conductivity at interface (W/m/K)
 
     for i in range(soilvar.nsoi-1):
-        tk_plus_onehalf[i] = soilvar.tk[i] * soilvar.tk[i+1] * (soilvar.z[i]-soilvar.z[i+1]) / (soilvar.tk[i]*(
-            soilvar.z_plus_onehalf[i]-soilvar.z[i+1]) + soilvar.tk[i+1]*(soilvar.z[i]-soilvar.z_plus_onehalf[i]))
+        tk_plus_onehalf[i] = soilvar.tk[i] * soilvar.tk[i+1] * (soilvar.z[i]-soilvar.z[i+1]) / \
+            (soilvar.tk[i]*(soilvar.z_plus_onehalf[i]-soilvar.z[i+1]) +
+             soilvar.tk[i+1]*(soilvar.z[i]-soilvar.z_plus_onehalf[i]))
 
     # --- Set up tridiagonal matrix
 
