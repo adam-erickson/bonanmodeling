@@ -26,6 +26,8 @@ def tridiagonal_solver(a, b, c, d, n):
         U_i = F_i - E_i * U_i+1
     """
 
+    # --- Placeholder arrays
+
     e = np.zeros(n)
     f = np.zeros(n)
     u = np.zeros(n)

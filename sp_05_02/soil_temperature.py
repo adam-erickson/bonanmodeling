@@ -58,6 +58,8 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
     ------------------------------------------------------
     """
 
+    # --- Placeholder arrays
+
     tsoi0 = np.zeros(soilvar.nsoi)
     tk_plus_onehalf = np.zeros(soilvar.nsoi)
     a = np.zeros(soilvar.nsoi)
@@ -81,7 +83,7 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
 
     # Top soil layer with tsurf as boundary condition
 
-    i = 1
+    i = 0
     m = soilvar.cv[i] * soilvar.dz[i] / dt
     a[i] = 0
     c[i] = -tk_plus_onehalf[i] / soilvar.dz_plus_onehalf[i]
