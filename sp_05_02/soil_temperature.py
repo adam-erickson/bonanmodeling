@@ -112,8 +112,8 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
 
     # --- Derive energy flux into soil (W/m2)
 
-    soilvar.gsoi = soilvar.tk[1] * \
-        (tsurf - soilvar.tsoi[1]) / (0 - soilvar.z[1])
+    soilvar.gsoi = soilvar.tk[0] * \
+        (tsurf - soilvar.tsoi[0]) / (0 - soilvar.z[0])
 
     # --- Phase change for soil layers undergoing freezing of thawing
 
@@ -143,7 +143,8 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
     # Error check
 
     err = edif - soilvar.gsoi - soilvar.hfsoi
-    print("Error check values: ", edif, soilvar.gsoi, soilvar.hfsoi)
+    #print("Original values: ", 464.621857, 464.621857, 0.000000)
+    #print("Error check values: ", edif, soilvar.gsoi, soilvar.hfsoi)
     if np.abs(err) > 1e-03:
         raise Exception("Soil temperature energy conservation error")
 

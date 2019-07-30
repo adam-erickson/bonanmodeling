@@ -76,7 +76,7 @@ def soil_thermal_properties(physcon, soilvar):
 
         # Thermal conductivity of soil solids (W/m/K)
 
-        tksol = (tk_quartz**quartz) * (tko**(1-quartz))
+        tksol = np.power(tk_quartz, quartz) * np.power(tko, (1-quartz))
 
         # --- Saturated thermal conductivity (W/m/K) and unfrozen and frozen values
 

@@ -175,7 +175,7 @@ hour_out = np.zeros(shape=ntim)
 z_out = np.zeros(shape=ntim)
 tsoi_out = np.zeros(shape=ntim)
 
-for iday in range(nday):
+for iday in range(1, nday):
 
     print("day = {:6.0f}".format(iday))
 
