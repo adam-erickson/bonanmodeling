@@ -101,20 +101,23 @@ def phase_change(physcon, soilvar, dt):
 
             # Cannot melt more ice than is present
 
-            soilvar.h2osoi_ice[i] = np.max(0, soilvar.h2osoi_ice[i])
+            soilvar.h2osoi_ice[i] = np.max(
+                np.array([0, soilvar.h2osoi_ice[i]]))
 
             # Ice cannot exceed total water that is present
 
-            soilvar.h2osoi_ice[i] = np.min(wmass0, soilvar.h2osoi_ice[i])
+            soilvar.h2osoi_ice[i] = np.min(
+                np.array([wmass0, soilvar.h2osoi_ice[i]]))
 
             # Update liquid water (kg H2O/m2) for change in ice
 
-            soilvar.h2osoi_liq[i] = np.max(0, (wmass0-soilvar.h2osoi_ice[i]))
+            soilvar.h2osoi_liq[i] = np.max(
+                np.array([0, wmass0-soilvar.h2osoi_ice[i]]))
 
             # Actual energy flux from phase change (W/m2). This is equal to
             # heat_flux_pot except if tried to melt too much ice.
 
-            heat_flux = physcon.hfus * (soilvar.h2osoi_ice(i) - wice0) / dt
+            heat_flux = physcon.hfus * (soilvar.h2osoi_ice[i] - wice0) / dt
 
             # Sum energy flux from phase change (W/m2)
 
@@ -139,7 +142,7 @@ def phase_change(physcon, soilvar, dt):
 
                 # Energy flux (W/m2)
 
-                constraint = np.min(heat_flux_pot, heat_flux_max)
+                constraint = np.min(np.array([heat_flux_pot, heat_flux_max]))
                 err = heat_flux - constraint
                 if np.abs(err) > 1e-03:
                     raise Exception(
@@ -160,7 +163,7 @@ def phase_change(physcon, soilvar, dt):
 
                 # Energy flux (W/m2)
 
-                constraint = np.max(heat_flux_pot, heat_flux_max)
+                constraint = np.max(np.array([heat_flux_pot, heat_flux_max]))
                 err = heat_flux - constraint
                 if np.abs(err) > 1e-03:
                     raise Exception(
@@ -168,7 +171,7 @@ def phase_change(physcon, soilvar, dt):
 
                 # Change in ice (kg H2O/m2)
 
-                err = (soilvar.h2osoi_ice(i) - wice0) - \
+                err = (soilvar.h2osoi_ice[i] - wice0) - \
                     constraint / physcon.hfus * dt
                 if np.abs(err) > 1e-03:
                     raise Exception(
