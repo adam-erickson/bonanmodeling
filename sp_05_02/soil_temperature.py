@@ -63,7 +63,7 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
     283.530602
 
     Python tsurf
-    283.819873 1800.000000
+    283.819873
     """
 
     # --- Placeholder arrays
