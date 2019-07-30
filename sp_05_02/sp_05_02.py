@@ -159,21 +159,23 @@ for i in range(soilvar.nsoi):
 
 # Counter for output file
 
-m = -1
+m = 0
 
 # Main loop is NTIM iterations per day with a time step of DT seconds.
 # This is repeated NDAY times.
 
 ntim = np.int(np.round(86400/dt))
 
-# Placeholders
+# -- Placeholders
 
-hour_vec = np.zeros(shape=soilvar.nsoi)
-z_vec = np.zeros(shape=soilvar.nsoi)
-tsoi_vec = np.zeros(shape=soilvar.nsoi)
-hour_out = np.zeros(shape=soilvar.nsoi)
-z_out = np.zeros(shape=soilvar.nsoi)
-tsoi_out = np.zeros(shape=soilvar.nsoi)
+# shape = 1968 = 48 (ntim) * 41 (?)
+hour_vec = np.zeros(shape=1968)
+z_vec = np.zeros(shape=1968)
+tsoi_vec = np.zeros(shape=1968)
+
+hour_out = np.zeros(shape=1968)
+z_out = np.zeros(shape=1968)
+tsoi_out = np.zeros(shape=1968)
 
 for iday in range(1, nday+1):
 
@@ -202,12 +204,9 @@ for iday in range(1, nday+1):
 
         if iday == nday:
 
-            print("recording")
-
             # Surface output
 
             # Vector format - to write to data file
-            m += 1
             hour_vec[m] = hour
             z_vec[m] = 0
             tsoi_vec[m] = tsurf - physcon.tfrz  # deg C
@@ -226,8 +225,7 @@ for iday in range(1, nday+1):
                     z_vec[m] = soilvar.z[i] * 100  # cm
                     tsoi_vec[m] = soilvar.tsoi[i] - physcon.tfrz  # deg C
                     z_out[i+1] = soilvar.z[i] * 100  # cm
-                    tsoi_out[i+1, itim] = soilvar.tsoi[i] - \
-                        physcon.tfrz  # deg C
+                    tsoi_out[i+1] = soilvar.tsoi[i] - physcon.tfrz  # deg C
 
 # --- Write output file
 
