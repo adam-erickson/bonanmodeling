@@ -159,7 +159,7 @@ for i in range(soilvar.nsoi):
 
 # Counter for output file
 
-m = 0
+m = -1
 
 # Main loop is NTIM iterations per day with a time step of DT seconds.
 # This is repeated NDAY times.
@@ -168,12 +168,12 @@ ntim = np.int(np.round(86400/dt))
 
 # Placeholders
 
-hour_vec = np.zeros(shape=ntim)
-z_vec = np.zeros(shape=ntim)
-tsoi_vec = np.zeros(shape=ntim)
-hour_out = np.zeros(shape=ntim)
-z_out = np.zeros(shape=ntim)
-tsoi_out = np.zeros(shape=ntim)
+hour_vec = np.zeros(shape=nday)
+z_vec = np.zeros(shape=nday)
+tsoi_vec = np.zeros(shape=nday)
+hour_out = np.zeros(shape=nday)
+z_out = np.zeros(shape=nday)
+tsoi_out = np.zeros(shape=nday)
 
 for iday in range(1, nday):
 
@@ -232,7 +232,7 @@ for iday in range(1, nday):
 a = np.array(["hour", "z", "tsoi"])
 header = "{:>12s} {:>12s} {:>12s}".format(*a)
 
-np.savetxt("data.txt", np.transpose([hour_vec, z_vec, tsoi_vec]), comments="",
+np.savetxt("data_python.txt", np.transpose([hour_vec, z_vec, tsoi_vec]), comments="",
            delimiter=" ", fmt='%12.3f', header=header)
 
 # --- Make contour plot
