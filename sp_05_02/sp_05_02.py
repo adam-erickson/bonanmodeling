@@ -50,17 +50,23 @@ class SoilVar:
     def __init__(self, nsoi, dz, soil_texture, method):
         # Volumetric soil water content at saturation (porosity)
         # (Clapp and Hornberger. 1978. Water Resources Research 14:601-604)
-        self.watsat = np.array([0.395, 0.410, 0.435, 0.485,
-                                0.451, 0.420, 0.477, 0.476, 0.426, 0.492, 0.482])
-        self.silt = np.array([5.0, 12.0, 32.0, 70.0, 39.0, 15.0,
-                              56.0, 34.0,  6.0, 47.0, 20.0])  # Percent silt
-        self.sand = np.array([92.0, 82.0, 58.0, 17.0, 43.0, 58.0,
-                              10.0, 32.0, 52.0,  6.0, 22.0])  # Percent sand
-        self.clay = np.array([3.0,  6.0, 10.0, 13.0, 18.0, 27.0,
-                              34.0, 34.0, 42.0, 47.0, 58.0])  # Percent clay
-        self.soil_texture = soil_texture  # Soil texture class
-        self.method = method  # Use excess heat for phase change
-        self.nsoi = nsoi  # Number of layers in soil profile
+        self.watsat = np.array(
+            [0.395, 0.410, 0.435, 0.485, 0.451, 0.420, 0.477, 0.476, 0.426, 0.492, 0.482])
+        # Percent silt
+        self.silt = np.array(
+            [5.0, 12.0, 32.0, 70.0, 39.0, 15.0, 56.0, 34.0,  6.0, 47.0, 20.0])
+        # Percent sand
+        self.sand = np.array(
+            [92.0, 82.0, 58.0, 17.0, 43.0, 58.0, 10.0, 32.0, 52.0,  6.0, 22.0])
+        # Percent clay
+        self.clay = np.array(
+            [3.0,  6.0, 10.0, 13.0, 18.0, 27.0, 34.0, 34.0, 42.0, 47.0, 58.0])
+        # Soil texture class
+        self.soil_texture = soil_texture
+        # Use excess heat for phase change
+        self.method = method
+        # Number of layers in soil profile
+        self.nsoi = nsoi
         # Soil layer thickness (m)
         self.dz = np.full(shape=nsoi, fill_value=dz)
         # Soil depth (m) at center of layer i (negative distance from surface)
@@ -79,6 +85,10 @@ class SoilVar:
         self.tk = np.zeros(shape=nsoi)
         # Volumetric heat capacity (J/m3/K)
         self.cv = np.zeros(shape=nsoi)
+        # Energy flux into soil (W/m2)
+        self.gsoi = None
+        # Soil phase change energy flux (W/m2)
+        self.hfsoi = None
 
 
 # --- Initialize physical constants
@@ -86,6 +96,7 @@ class SoilVar:
 physcon = PhysCon()
 
 # --- Initialize soil variables
+
 # sand texture, 'excess-heat' phase-change method, 120 layers in soil profile, soil layer thickness of 0.025 m; 'apparent-heat-capacity' is also available
 
 soilvar = SoilVar(soil_texture=0, method='excess-heat', nsoi=120, dz=0.025)

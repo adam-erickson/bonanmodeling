@@ -60,7 +60,6 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
 
     # --- Placeholder arrays
 
-    tsoi0 = np.zeros(soilvar.nsoi)
     tk_plus_onehalf = np.zeros(soilvar.nsoi)
     a = np.zeros(soilvar.nsoi)
     c = np.zeros(soilvar.nsoi)
@@ -69,8 +68,7 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
 
     # --- Save current soil temperature for energy conservation check
 
-    for i in range(soilvar.nsoi):
-        tsoi0[i] = soilvar.tsoi[i]
+    tsoi0 = soilvar.tsoi
 
     # --- Thermal conductivity at interface (W/m/K)
 
@@ -145,6 +143,7 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
     # Error check
 
     err = edif - soilvar.gsoi - soilvar.hfsoi
+    print("Error check values: ", edif, soilvar.gsoi, soilvar.hfsoi)
     if np.abs(err) > 1e-03:
         raise Exception("Soil temperature energy conservation error")
 
