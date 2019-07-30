@@ -47,7 +47,7 @@ class SoilVar:
     10: clay
     """
 
-    def __init__(self, nsoi, dz, soil_texture, method):
+    def __init__(self, soil_texture, method, nsoi, dz):
         # Volumetric soil water content at saturation (porosity)
         # (Clapp and Hornberger. 1978. Water Resources Research 14:601-604)
         self.watsat = np.array(
