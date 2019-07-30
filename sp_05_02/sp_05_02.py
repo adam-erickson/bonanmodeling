@@ -168,14 +168,14 @@ ntim = np.int(np.round(86400/dt))
 
 # Placeholders
 
-hour_vec = np.zeros(shape=nday)
-z_vec = np.zeros(shape=nday)
-tsoi_vec = np.zeros(shape=nday)
-hour_out = np.zeros(shape=nday)
-z_out = np.zeros(shape=nday)
-tsoi_out = np.zeros(shape=nday)
+hour_vec = np.zeros(shape=soilvar.nsoi)
+z_vec = np.zeros(shape=soilvar.nsoi)
+tsoi_vec = np.zeros(shape=soilvar.nsoi)
+hour_out = np.zeros(shape=soilvar.nsoi)
+z_out = np.zeros(shape=soilvar.nsoi)
+tsoi_out = np.zeros(shape=soilvar.nsoi)
 
-for iday in range(1, nday):
+for iday in range(1, nday+1):
 
     print("day = {:6.0f}".format(iday))
 
@@ -202,6 +202,8 @@ for iday in range(1, nday):
 
         if iday == nday:
 
+            print("recording")
+
             # Surface output
 
             # Vector format - to write to data file
@@ -210,16 +212,16 @@ for iday in range(1, nday):
             z_vec[m] = 0
             tsoi_vec[m] = tsurf - physcon.tfrz  # deg C
 
-            # For MATLAB contour
+            # For contour plot
             hour_out[itim] = hour
-            z_out[1] = 0
-            tsoi_out[1, itim] = tsurf - physcon.tfrz  # deg C
+            z_out[m] = 0
+            tsoi_out[m] = tsurf - physcon.tfrz  # deg C
 
             # Soil layers for top 100 cm
 
             for i in range(soilvar.nsoi):
                 if soilvar.z[i] > -1.0:
-                    m = m + 1
+                    m += 1
                     hour_vec[m] = hour
                     z_vec[m] = soilvar.z[i] * 100  # cm
                     tsoi_vec[m] = soilvar.tsoi[i] - physcon.tfrz  # deg C
