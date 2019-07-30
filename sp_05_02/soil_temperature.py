@@ -58,6 +58,14 @@ def soil_temperature(physcon, soilvar, tsurf, dt):
     ------------------------------------------------------
     """
 
+    """
+    Matlab tsurf
+    283.530602
+
+    Python tsurf
+    283.819873 1800.000000
+    """
+
     # --- Placeholder arrays
 
     tk_plus_onehalf = np.zeros(soilvar.nsoi)
