@@ -230,7 +230,7 @@ for iday in range(1, nday):
 # --- Write output file
 
 a = np.array(["hour", "z", "tsoi"])
-header = "{:12s} {:12s} {:12s}".format(*a)
+header = "{:>12s} {:>12s} {:>12s}".format(*a)
 
 np.savetxt("data.txt", np.transpose([hour_vec, z_vec, tsoi_vec]), comments="",
            delimiter=" ", fmt='%12.3f', header=header)
