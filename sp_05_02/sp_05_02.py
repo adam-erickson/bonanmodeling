@@ -141,8 +141,8 @@ for i in range(soilvar.nsoi):
         soilvar.h2osoi_ice[i] = 0
         soilvar.h2osoi_liq[i] = 0.8 * h2osoi_sat
     else:
-        soilvar.h2osoi_liq[i] = 0
         soilvar.h2osoi_ice[i] = 0.8 * h2osoi_sat
+        soilvar.h2osoi_liq[i] = 0
 
 # --- Time stepping loop to increment soil temperature
 
@@ -157,12 +157,12 @@ ntim = np.int(np.round(86400/dt))
 
 # Placeholders
 
-hour_vec = np.zeros(ntim)
-z_vec = np.zeros(ntim)
-tsoi_vec = np.zeros(ntim)
-hour_out = np.zeros(ntim)
-z_out = np.zeros(ntim)
-tsoi_out = np.zeros(ntim)
+hour_vec = np.zeros(shape=ntim)
+z_vec = np.zeros(shape=ntim)
+tsoi_vec = np.zeros(shape=ntim)
+hour_out = np.zeros(shape=ntim)
+z_out = np.zeros(shape=ntim)
+tsoi_out = np.zeros(shape=ntim)
 
 for iday in range(nday):
 
