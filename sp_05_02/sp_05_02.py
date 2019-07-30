@@ -85,7 +85,8 @@ class SoilVar:
 
 physcon = PhysCon()
 
-# --- Initialize soil variables: 120 layers in soil profile, soil layer thickness of 0.025 m, sand texture, and the 'excess-heat' phase-change method; 'apparent-heat-capacity' is also available
+# --- Initialize soil variables
+# 120 layers in soil profile, soil layer thickness of 0.025 m, sand texture, and the 'excess-heat' phase-change method; 'apparent-heat-capacity' is also available
 
 soilvar = SoilVar(nsoi=120, dz=0.025, soil_texture=0, method='excess-heat')
 
